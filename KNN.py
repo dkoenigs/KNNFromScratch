@@ -80,7 +80,7 @@ def printPredictions(predictions):
 	nearestSports = []
 	for neighbor in predictions:
 		nearestSports.append(neighbor[12])
-	mostCommonClass = max(nearestSports)
+	mostCommonClass = max(set(nearestSports), key=nearestSports.count)
 	print("Ideal Sport: ", mostCommonClass)
 
 
@@ -92,7 +92,7 @@ def main():
 	sex = "M" #M,F or Blank (column: 3)
 	birthCountry = "GER" #Any abbreviated country code (column: 4)
 	age = 21
-	height = 199
+	height = 200
 	weight = 97
 	k = 3
 	#---------------------------------------------------------------
