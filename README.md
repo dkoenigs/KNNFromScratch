@@ -2,7 +2,7 @@
 
 **OVERVIEW**
 <br>
-Given sex, country of birth, age, weight and height this model returns the sport most suited to you based on a data set from the 2012 Olympic Games.
+Given sex, country of birth, age, weight(kg) and height(cm) this model returns the sport most suited to you based on a data set from the 2012 Olympic Games.
 <br><br>
 The date set is first filtered by sex and country of birth (optional). Age, height and weight are then used to determine the k-nearest neighbors of such an individual as well as the most likely sport/classification.
 <br><br>
@@ -50,8 +50,8 @@ Program: Excel
 <br>
 ![](exampleInput.png)
 
-**EXAMPLE INPUT**
+**EXAMPLE OUTPUT**
 <br>
-![](exampleInput.png)
+![](exampleOutput.png)
 
 
