@@ -2,7 +2,7 @@ import sys
 import math
 import csv
 
-# Euclidean distance
+#Calculate Euclidean distance
 def euclideanDistance (existingRecord, newRecord):
 	dist = 0.0
 	for i in range (3):
@@ -11,7 +11,7 @@ def euclideanDistance (existingRecord, newRecord):
 	existingRecord[7], existingRecord[8], existingRecord[9], existingRecord[10], existingRecord[11],
 	existingRecord[12], existingRecord[13], existingRecord[14], existingRecord[15]]
 
-
+#Find K-Nearest Neighbors
 def kNearestNeighbors(dataset, newRecord, k):
 	distances = []
 	for row in dataset:
@@ -20,7 +20,7 @@ def kNearestNeighbors(dataset, newRecord, k):
 	distances.sort(key=lambda x: x[0])
 	return distances[0:k]
 
-
+#Predict Classification
 def predict(dataset, newRecord, k):
 	nearestNeighbors = kNearestNeighbors(dataset,newRecord,k)
 
@@ -47,7 +47,7 @@ def stringToFloatColumn(dataSet, column):
 	for row in dataSet:
 		row[column] = float(row[column].strip())
 
-#Filter by Binary
+#Filter Function
 def filterByColumnContent(dataSet, column, value):
 	filteredDataSet = []
 
@@ -61,12 +61,13 @@ def filterByColumnContent(dataSet, column, value):
 def normalize(value, min, max):
 	return (value-min)/(max-min)
 
-#Get Match Percentage (Min approx: 0, Max approx: 10.522)
+#Get Match Percentage (Min approx: 0, Max approx: 8)
 def matchPercent(euclideanDistance):
-	return "{:.2f}".format((10.522 - euclideanDistance)/10.522 * 100)
+	return "{:.2f}".format((8 - euclideanDistance)/8 * 100)
 
 #Print Predictions
 def printPredictions(predictions):
+	#Print Nearest Neighbors
 	print("-----Predictions--------------------------------------------------------------------")
 	for individual in predictions:
 		print("Match: ", matchPercent(individual[0]), "%\nName: ", individual[3], "\nSport: ", individual[12],
@@ -74,6 +75,7 @@ def printPredictions(predictions):
 		individual[7], "\nPlace of Birth: ", individual[2], "\nCountry Represented: ", individual[4])
 		print("------------------------------------------------------------------------------------")
 	
+	#Print most common classification
 	nearestSports = []
 	for neighbor in predictions:
 		nearestSports.append(neighbor[12])
@@ -81,22 +83,28 @@ def printPredictions(predictions):
 	
 	print("Ideal Sport: ", mostCommonClass)
 
+
+
+
 def main():
 
+	#Inputs
 	filename = "data-sets/2012Olympics.csv"
-
-	sex = "M" #M,F or Blank (column: 3)
+	sex = "" #M,F or Blank (column: 3)
 	birthCountry = "" #Any abbreviated country code (column: 4)
 	age = 21
 	height = 199
-	weight = 97
+	weight = 70.3068
 	k = 3
 
+	#Read CSV
 	dataSet = readCSV(filename)
 
+	#Normalize Input Variables
 	normalizedAge = normalize(age, 13, 65)
 	normalizedHeight = normalize(height, 132, 221)
 	normalizedWeight = normalize(weight, 36, 218)
+
 
 	#STEP 1 - Filter by Sex and Birth Country (If applicable)
 	if (sex != ""):
@@ -104,9 +112,10 @@ def main():
 	if (birthCountry != ""):
 		dataSet = filterByColumnContent(dataSet, 4, birthCountry)
 
-	#STEP 2 - Return the K-Nearest individuals from the filtered dataset using normalized age, heigh & weight
+	#STEP 2 - Return the K-Nearest individuals from the filtered dataset using normalized age, height & weight
 	prediction = predict(dataSet, [normalizedAge, normalizedHeight, normalizedWeight], k)
 
+	#STEP 3 - Print out k closest matches and predicted classification
 	if (len(prediction) == 0):
 		print("No athlete matches found.")
 	else:
